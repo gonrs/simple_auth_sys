@@ -4,11 +4,15 @@ import com.example.server.modules.auth.dto.AuthResponse;
 import com.example.server.modules.auth.dto.LoginRequest;
 import com.example.server.modules.auth.dto.RegisterRequest;
 import com.example.server.modules.auth.dto.UserInfoResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("api/auth")
@@ -27,6 +31,10 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
+    @PostMapping("/refreshToken")
+    public void refreshToken(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        authService.refreshToken(request,response);
+    }
     @GetMapping("/getMe")
     public ResponseEntity<UserInfoResponse> getMe(){
         return ResponseEntity.ok(authService.getMe());

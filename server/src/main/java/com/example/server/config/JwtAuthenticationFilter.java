@@ -1,6 +1,8 @@
 package com.example.server.config;
 
+import com.example.server.utils.DataUtils;
 import com.example.server.utils.Errors;
+import com.example.server.utils.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Component
 @RequiredArgsConstructor
@@ -32,12 +35,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-//            throw new Errors.AuthError("Token is empty");
+        String requestURI = request.getRequestURI();
+        if (authHeader == null || !authHeader.startsWith("Bearer ") || Arrays.stream(DataUtils.ALLOWED_URLS).anyMatch(s -> s.startsWith(requestURI))) {
             filterChain.doFilter(request, response);
             return;
         }
         jwt = authHeader.substring(7);
+        var claims = jwtService.extractAllClaims(jwt);
+        if (claims.isEmpty()) {
+            filterChain.doFilter(request, response);
+            return;
+        } else if (claims.get().get("type") == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         userEmail = jwtService.extractUserEmail(jwt).orElseThrow(() -> new Errors.AuthError("Invalid token."));
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {

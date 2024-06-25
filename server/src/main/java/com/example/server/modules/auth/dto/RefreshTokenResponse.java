@@ -1,6 +1,5 @@
 package com.example.server.modules.auth.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthResponse {
-    private UserInfoResponse user;
+public class RefreshTokenResponse {
     private String access_token;
     private String refresh_token;
 }

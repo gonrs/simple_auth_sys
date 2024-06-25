@@ -1,5 +1,6 @@
 package com.example.server.config;
 
+import com.example.server.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +21,6 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     //
     private final AuthenticationEntryPoint authenticationEntryPoint;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -28,8 +28,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req
-                                .requestMatchers("/api/auth/register/**", "/api/auth/login/**").permitAll()
-                                .requestMatchers("api/demo/unSecurity").permitAll()
+                                .requestMatchers(DataUtils.ALLOWED_URLS).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

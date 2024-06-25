@@ -1,6 +1,5 @@
-package com.example.server.config;
+package com.example.server.utils;
 
-import com.example.server.utils.Errors;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -25,21 +24,26 @@ public class JwtService {
     private String SECRET_KEY;
 
     @Value("${application.security.jwt.expiration}")
-    private int tokenExpiration;
+    private long tokenExpiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshTokenExpiration;
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("type", "access");
+        return generateToken(map, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts
-                .builder()
-                .claims(extraClaims)
-                .subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + tokenExpiration))
-                .signWith(getSigningKey())
-                .compact();
+        return buildToken(extraClaims, userDetails, tokenExpiration);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, refreshTokenExpiration);
+    }
+
+    public String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expirationTime) {
+        return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername()).issuedAt(new Date(System.currentTimeMillis())).expiration(new Date(System.currentTimeMillis() + expirationTime)).signWith(getSigningKey()).compact();
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -56,26 +60,24 @@ public class JwtService {
     }
 
     public Optional<String> extractUserEmail(String token) {
-        return Optional.of( extractClaim(token, Claims::getSubject));
+        return Optional.of(extractClaim(token, Claims::getSubject));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token).orElseThrow(() -> new Errors.AuthError("Token is invalid."));
+        final Claims claims = extractAllClaims(token).orElseThrow(() -> new Errors.AuthError("Invalid token."));
         return claimsResolver.apply(claims);
     }
-    private Optional<Claims> extractAllClaims(String token) {
-        JwtParser jwtParser = Jwts
-                .parser()
-                .verifyWith(getSigningKey())
-                .build();
+
+    public Optional<Claims> extractAllClaims(String token) {
+        JwtParser jwtParser = Jwts.parser().verifyWith(getSigningKey()).build();
         try {
-            return Optional.of(jwtParser
-                    .parseSignedClaims(token)
-                    .getPayload());
+            return Optional.of(jwtParser.parseSignedClaims(token).getPayload());
         } catch (Exception e) {
-            throw new Errors.AuthError("Token is invalid.");
+//            throw new Errors.AuthError("Token is invalid.");
         }
+        return Optional.empty();
     }
+
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

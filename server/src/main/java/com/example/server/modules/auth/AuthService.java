@@ -1,19 +1,22 @@
 package com.example.server.modules.auth;
 
-import com.example.server.config.JwtService;
-import com.example.server.modules.auth.dto.AuthResponse;
-import com.example.server.modules.auth.dto.LoginRequest;
-import com.example.server.modules.auth.dto.RegisterRequest;
-import com.example.server.modules.auth.dto.UserInfoResponse;
+import com.example.server.modules.auth.dto.*;
 import com.example.server.modules.user.User;
 import com.example.server.modules.user.UserService;
 import com.example.server.modules.user.helpers.Role;
 import com.example.server.utils.Errors;
+import com.example.server.utils.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +36,9 @@ public class AuthService {
                 .build();
 //        Save user
         userService.create(user);
-//        Generate token
+//        Generate tokens
         String jwtToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 //        Return user with token
         UserInfoResponse userInfoResponse = UserInfoResponse.builder()
                 .id(user.getId())
@@ -43,7 +47,7 @@ public class AuthService {
                 .emailVerification(user.isEmailVerification())
                 .role(user.getRole())
                 .build();
-        return AuthResponse.builder().user(userInfoResponse).token(jwtToken).build();
+        return AuthResponse.builder().user(userInfoResponse).refresh_token(refreshToken).access_token(jwtToken).build();
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -65,6 +69,7 @@ public class AuthService {
 
 //        Generate token
         String jwtToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 //        Return user with token
         UserInfoResponse userInfoResponse = UserInfoResponse.builder()
                 .id(user.getId())
@@ -73,7 +78,7 @@ public class AuthService {
                 .emailVerification(user.isEmailVerification())
                 .role(user.getRole())
                 .build();
-        return AuthResponse.builder().user(userInfoResponse).token(jwtToken).build();
+        return AuthResponse.builder().user(userInfoResponse).refresh_token(refreshToken).access_token(jwtToken).build();
     }
 
     public UserInfoResponse getMe() {
@@ -85,5 +90,24 @@ public class AuthService {
                 .emailVerification(user.isEmailVerification())
                 .role(user.getRole())
                 .build();
+    }
+
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final String authHeader = request.getHeader("Authorization");
+        final String refreshToken;
+        final String userEmail;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return;
+        }
+        refreshToken = authHeader.substring(7);
+        userEmail = jwtService.extractUserEmail(refreshToken).orElseThrow(() -> new Errors.AuthError("Invalid token."));
+        if (userEmail != null) {
+            UserDetails userDetails = this.userService.getByEmail(userEmail);
+            if (jwtService.isTokenValid(refreshToken, userDetails)) {
+                String accessToken = jwtService.generateToken(userDetails);
+                var authResponse = RefreshTokenResponse.builder().access_token(accessToken).refresh_token(refreshToken).build();
+                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+            }
+        }
     }
 }

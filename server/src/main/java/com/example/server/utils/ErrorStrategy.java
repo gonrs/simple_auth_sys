@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import java.util.List;
 @Component
 @ControllerAdvice
 public class ErrorStrategy {
-
     @ExceptionHandler(Errors.ResError.class)
     public ResponseEntity<String> ResError(Errors.ResError ex) {
         return new ResponseEntity<>("{\"message\":\"" + ex.getMessage() + "\"}", HttpStatus.BAD_REQUEST);
