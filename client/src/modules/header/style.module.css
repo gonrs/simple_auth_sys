@@ -1,0 +1,15 @@
+.header {
+	width: 100%;
+	height: 65px;
+	display: flex;
+	align-items: center;
+	padding: 8.5px;
+	justify-content: space-between;
+	/* background-color: var(--main-black-dark-color); */
+	border-bottom: 2px solid var(--main-black-light-color);
+}
+.headerInfo {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}

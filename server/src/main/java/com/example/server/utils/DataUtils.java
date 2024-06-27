@@ -10,6 +10,7 @@ public class DataUtils {
             "/api/auth/register/**",
             "/api/auth/login/**",
             "/api/auth/refreshToken/**",
-            "/api/demo/unSecurity"
+            "/api/demo/unSecurity",
+            "/api/user/checkServer"
     };
 }

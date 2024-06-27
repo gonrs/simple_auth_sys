@@ -1,0 +1,20 @@
+import { tokenHelper } from '@helper/tokenHelper'
+import axios from 'axios'
+
+export const instance = axios.create({
+	baseURL: import.meta.env.VITE_URL,
+	headers: {
+		Authorization: `Bearer ${
+			tokenHelper.getAccessTokenFromLocalStorage() || null
+		}`,
+	},
+})
+
+export const updateToken = axios.create({
+	baseURL: import.meta.env.VITE_URL,
+	headers: {
+		Authorization: `Bearer ${
+			tokenHelper.getRefreshTokenFromLocalStorage() || null
+		}`,
+	},
+})

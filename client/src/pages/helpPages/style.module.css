@@ -1,0 +1,120 @@
+.loadingPage {
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.loadingPage h1 {
+	animation: LoadingAnim 2s infinite;
+}
+@keyframes LoadingAnim {
+	0% {
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(90deg);
+	}
+	50% {
+		transform: rotate(180deg);
+	}
+	75% {
+		transform: rotate(270deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+/* confirmPage */
+.confirmPage {
+	height: var(--var-min-height);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.confirmPage h1 {
+	animation: LoadingAnim 2s infinite;
+}
+@keyframes LoadingAnim {
+	0% {
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(90deg);
+	}
+	50% {
+		transform: rotate(180deg);
+	}
+	75% {
+		transform: rotate(270deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+/* Lay Out */
+.layOutContainer {
+	width: 100vw;
+}
+.container {
+	margin: 0 auto;
+	max-width: 1250px;
+	padding: 0 15px;
+	min-height: var(--var-min-height);
+}
+/* Error Page */
+.errorPageCon {
+	min-height: 100vh;
+	min-width: 100vw;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	justify-content: center;
+	align-items: center;
+}
+.errorPage {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: center;
+}
+.errorPage h1 {
+	font-size: 95px;
+	color: var(--main-active-color);
+}
+.errorLink {
+	color: var(--main-active-color);
+	padding: 10px 20px;
+	font-size: 20px;
+	border-radius: 10px;
+	border: 2px solid var(--main-active-color);
+	transition: all 0.3s;
+}
+.errorLink:hover {
+	background-color: var(--main-active-color);
+	color: var(--main-light-color);
+}
+/* serverNotWorking */
+.serverNotWorking {
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+}
+.serverNotWorking h1 {
+	color: var(--main-light-color);
+	font-size: 35px;
+	/* max-width: 500px; */
+	padding: 15px;
+	text-align: center;
+}
+.serverNotWorking h2 {
+	font-size: 130px;
+	color: var(--main-active-color);
+}
