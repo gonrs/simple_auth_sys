@@ -28,6 +28,8 @@ public class JwtService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshTokenExpiration;
 
+    private long confirmTokenExpiration = 1200000;
+
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("type", "access");
@@ -39,7 +41,9 @@ public class JwtService {
     }
 
     public String generateRefreshToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, refreshTokenExpiration);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("type", "refresh");
+        return buildToken(map, userDetails, refreshTokenExpiration);
     }
 
     public String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expirationTime) {
@@ -78,6 +82,11 @@ public class JwtService {
         return Optional.empty();
     }
 
+    public String generateConfirmToken(UserDetails userDetails) {
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("type", "confirm");
+        return buildToken(parameters, userDetails, confirmTokenExpiration);
+    }
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

@@ -6,6 +6,7 @@ import ProtectedRoute from './ProtectedRoute'
 import ErrorPage from '@pages/helpPages/ErrorPage'
 import LayOut from '@pages/helpPages/LayOut'
 import Profile from '@pages/profile/Profile'
+import Confirm from '@pages/helpPages/Confirm'
 
 export const MainRoute = createBrowserRouter([
 	{
@@ -24,6 +25,10 @@ export const MainRoute = createBrowserRouter([
 			{
 				path: URLS.profile,
 				element: <ProtectedRoute children={<Profile />} needToBeAuth={true} />,
+			},
+			{
+				path: URLS.confirm,
+				element: <ProtectedRoute children={<Confirm />} needToBeAuth={true} />,
 			},
 		],
 	},

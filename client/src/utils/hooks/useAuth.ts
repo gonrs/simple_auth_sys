@@ -143,7 +143,7 @@ export const useAuth = () => {
 			await instance.get(ServerURLS.UPDATE_userName + '/' + newName)
 			updateUser()
 		} catch (err: any) {
-			// toast?.open.error(err.response.data.message)
+			toast?.open.error(err.response.data.message)
 			console.log(err.response.data.message)
 		}
 	}

@@ -11,12 +11,13 @@ export enum ServerURLS {
 	GOOGLEAUTH = '/auth/googleAuth',
 	UPDATETOKEN = '/auth/refreshToken',
 	//
-	SENDEMAILCODE = '/user/sendConfirmEmail',
-	GETEMAILCODE = '/user/getConfirmEmail',
+	SENDEMAILCONFIRM = '/user/sendConfirmMail',
+	GETMAILCONFIRM = '/user/confirmMail',
 	//
 	CHECKSERVERSTATUS = '/user/checkServer',
 	//
 	UPDATE_userName = '/user/updateName',
 	UPDATE_updatePassword = '/user/updatePassword',
 	UPDATE_updateEmail = '/user/updateEmail',
+	DELETE_ACCOUNT = '/user/delete',
 }

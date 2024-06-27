@@ -39,7 +39,7 @@ const Auth: FC = ({}) => {
 		return ''
 	}
 	//
-	async function handlLogin(e: any) {
+	async function handleLogin(e: any) {
 		e.preventDefault()
 		setIsSubmite(true)
 		if (
@@ -49,7 +49,7 @@ const Auth: FC = ({}) => {
 			login(userEmail, userPassword)
 		}
 	}
-	async function handlRegister(e: any) {
+	async function handleRegister(e: any) {
 		e.preventDefault()
 		setIsSubmite(true)
 		if (
@@ -66,7 +66,7 @@ const Auth: FC = ({}) => {
 				{isLogin ? (
 					<>
 						<h2>Login</h2>
-						<form onSubmit={handlLogin}>
+						<form onSubmit={handleLogin}>
 							<InputWithError
 								value={userEmail}
 								setValue={setUserEmail}
@@ -99,7 +99,7 @@ const Auth: FC = ({}) => {
 				) : (
 					<>
 						<h2>Register</h2>
-						<form onSubmit={handlRegister}>
+						<form onSubmit={handleRegister}>
 							<InputWithError
 								value={userName}
 								setValue={setUserName}

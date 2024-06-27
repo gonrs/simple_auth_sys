@@ -3,6 +3,8 @@ package com.example.server.modules.user;
 import com.example.server.modules.user.dto.UpdateUserEmailRequest;
 import com.example.server.modules.user.dto.UpdateUserPassRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,15 @@ public class UserContoller {
     public void checkServer() {
     }
 
+    @GetMapping("/sendConfirmMail")
+    public void sendConfirmMail() {
+        userService.sendConfirmMail();
+    }
+
+    @GetMapping("/confirmMail/{token}")
+    public void confirmMail(@PathVariable @Valid @NotEmpty(message = "token can`t be empty")  String token) {
+        userService.confirmMail(token);
+    }
     @PostMapping("/updateName")
     public void updateName(@RequestBody @Valid String newUserName) {
         userService.updateUserName(newUserName);

@@ -45,7 +45,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (claims.isEmpty()) {
             filterChain.doFilter(request, response);
             return;
-        } else if (claims.get().get("type") == null) {
+        }
+        if (!claims.get().get("type").equals("access")) {
             filterChain.doFilter(request, response);
             return;
         }
