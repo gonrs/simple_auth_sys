@@ -1,9 +1,6 @@
 package com.example.server.modules.auth;
 
-import com.example.server.modules.auth.dto.AuthResponse;
-import com.example.server.modules.auth.dto.LoginRequest;
-import com.example.server.modules.auth.dto.RegisterRequest;
-import com.example.server.modules.auth.dto.UserInfoResponse;
+import com.example.server.modules.auth.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -31,12 +28,18 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
+    @PostMapping("/googleAuth")
+    public ResponseEntity<AuthResponse> googleAuth(@RequestBody GoogleAuthRequest data) {
+        return ResponseEntity.ok(authService.googleAuth(data.getGoogleCredToken()));
+    }
+
     @PostMapping("/refreshToken")
     public void refreshToken(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        authService.refreshToken(request,response);
+        authService.refreshToken(request, response);
     }
+
     @GetMapping("/getMe")
-    public ResponseEntity<UserInfoResponse> getMe(){
+    public ResponseEntity<UserInfoResponse> getMe() {
         return ResponseEntity.ok(authService.getMe());
     }
 }

@@ -29,6 +29,9 @@ const Toast: FC<IToastProps> = ({ message, close, type }) => {
 	// 		currentToastImage = messageImg
 	// 		break
 	// }
+	if (message.trim.length == 0) {
+		close()
+	}
 	return (
 		<div className={[s.toast, s[`toast-${type}`]].join(' ')}>
 			{/* <img src={currentToastImage} alt='' className={s.toastImg} /> */}

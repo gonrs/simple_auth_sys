@@ -4,21 +4,41 @@ import { useAuth } from '@hooks/useAuth'
 import { Button } from '@ui'
 import { ROLE } from '@enums/ROLE'
 import { useProfile } from '@hooks/useProfile'
+import { ModalPage } from '@components/modal'
+import ChangeNameModal from '@modules/profile/ChangeNameModal'
 
 const Profile: FC = ({}) => {
+	const [isNameModalOpen, setIsNameModalOpen] = useState(false)
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+	//
 	const [isSendEmailDisabled, setIsSendEmailDisabled] = useState(false)
 	//
 	const { user } = useAuth()
-	const { deletAccount, sendConfirmMail } = useProfile()
+	const { deleteAccount, sendConfirmMail } = useProfile()
 	return (
 		<div>
+			<ModalPage
+				active={isNameModalOpen}
+				setActive={setIsNameModalOpen}
+				type='modal'
+				title='Change name.'
+				children={<ChangeNameModal close={() => setIsNameModalOpen(false)} />}
+			/>
+			<ModalPage
+				active={isDeleteModalOpen}
+				setActive={setIsDeleteModalOpen}
+				type='confirm'
+				title='Delete account.'
+				text='Are you really want to delete account ?'
+				okFunction={deleteAccount}
+			/>
 			<h2 className={s.profileTitle}>{user?.userName}`s Profile</h2>
 			<div className={s.profileMain}>
 				<div className={s.profileFlex}>
 					<h2>
 						Name: <span>{user?.userName}</span>
 					</h2>
-					<Button onClick={() => console.log('Change name')} size='small'>
+					<Button onClick={() => setIsNameModalOpen(true)} size='small'>
 						Change
 					</Button>
 				</div>
@@ -57,7 +77,11 @@ const Profile: FC = ({}) => {
 				</div>
 
 				<div className={s.profileFlex}>
-					<Button onClick={deletAccount} size='small' color='red'>
+					<Button
+						onClick={() => setIsDeleteModalOpen(true)}
+						size='small'
+						color='red'
+					>
 						Delete accaunt
 					</Button>
 				</div>

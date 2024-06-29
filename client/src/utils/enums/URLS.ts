@@ -17,7 +17,8 @@ export enum ServerURLS {
 	CHECKSERVERSTATUS = '/user/checkServer',
 	//
 	UPDATE_userName = '/user/updateName',
-	UPDATE_updatePassword = '/user/updatePassword',
-	UPDATE_updateEmail = '/user/updateEmail',
+	UPDATE_password = '/user/updatePassword',
+	UPDATE_email = '/user/updateEmail',
+	//
 	DELETE_ACCOUNT = '/user/delete',
 }

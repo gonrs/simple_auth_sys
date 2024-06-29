@@ -12,8 +12,8 @@ import InputWithError from '@components/inputWithError/inputWithError'
 
 const Auth: FC = ({}) => {
 	//
-	const [userEmail, setUserEmail] = useState<string>('asd@qwe.qwe')
-	const [userPassword, setUserPassword] = useState<string>('qweqwe')
+	const [userEmail, setUserEmail] = useState<string>('')
+	const [userPassword, setUserPassword] = useState<string>('')
 	const [userName, setUserName] = useState<string>('')
 	//
 	const [isLogin, setIsLogin] = useState<boolean>(true)

@@ -5,7 +5,7 @@ import com.example.server.utils.JwtService;
 import com.example.server.utils.MailSenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,6 +57,9 @@ public class UserService {
         }
     }
 
+    public boolean isValidEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
     public void updateUserEmail(String password, String newEmail) {
 //        update user email
     }
@@ -88,5 +91,10 @@ public class UserService {
         }
         user.setEmailVerification(true);
         userRepository.save(user);
+    }
+
+    public void deleteUser() {
+        User user = getCurrentUser();
+        userRepository.delete(user);
     }
 }

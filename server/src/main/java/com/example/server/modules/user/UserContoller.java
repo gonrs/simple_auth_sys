@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,11 @@ public class UserContoller {
     public void checkServer() {
     }
 
+    @DeleteMapping("/delete")
+    public void delete() {
+        userService.deleteUser();
+    }
+
     @GetMapping("/sendConfirmMail")
     public void sendConfirmMail() {
         userService.sendConfirmMail();
@@ -29,8 +35,9 @@ public class UserContoller {
     public void confirmMail(@PathVariable @Valid @NotEmpty(message = "token can`t be empty")  String token) {
         userService.confirmMail(token);
     }
-    @PostMapping("/updateName")
-    public void updateName(@RequestBody @Valid String newUserName) {
+
+    @GetMapping("/updateName/{newUserName}")
+    public void updateName(@PathVariable String newUserName) {
         userService.updateUserName(newUserName);
     }
 

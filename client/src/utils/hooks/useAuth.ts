@@ -94,7 +94,7 @@ export const useAuth = () => {
 			} else {
 				const registeredUser = await instance.post<IGetUserType>(
 					ServerURLS.GOOGLEAUTH,
-					{ credential }
+					{ googleCredToken: credential }
 				)
 				if (registeredUser.status === 200) {
 					authMyUser({
@@ -138,15 +138,6 @@ export const useAuth = () => {
 	// 	}
 	// }
 	// Profile API
-	async function updateUserName(newName: string) {
-		try {
-			await instance.get(ServerURLS.UPDATE_userName + '/' + newName)
-			updateUser()
-		} catch (err: any) {
-			toast?.open.error(err.response.data.message)
-			console.log(err.response.data.message)
-		}
-	}
 	return {
 		user: user.user,
 		isAuth: user.isAuth,
@@ -159,7 +150,5 @@ export const useAuth = () => {
 		googleAuth,
 		getMe,
 		// refreshToken,
-		// Update user
-		updateUserName,
 	}
 }

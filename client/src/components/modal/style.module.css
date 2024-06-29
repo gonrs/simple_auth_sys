@@ -1,0 +1,90 @@
+.modalPage {
+	height: 100vh;
+	width: 100vw;
+	background-color: var(--main-black-light-color-transparent);
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	opacity: 0;
+	pointer-events: none;
+	transition: all 0.15s;
+	cursor: pointer;
+}
+.modalPage.active {
+	pointer-events: all;
+	opacity: 1;
+}
+.modalContent {
+	cursor: auto;
+	padding: 20px 35px;
+	border-radius: 20px;
+	border: 2px solid var(--main-active-color);
+	background-color: var(--main-black-dark-color);
+	transform: scale(0);
+	transition: all 0.15s;
+	max-width: 350px;
+	display: flex;
+	flex-direction: column;
+}
+.modalContentBtn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	padding-top: 15px;
+}
+.modalContent h1 {
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+.modalContent h2 {
+	font-size: 15px;
+	font-weight: 100;
+	color: var(--main-black-gray-color);
+}
+.modalPage.active .modalContent {
+	transform: scale(1);
+}
+.toastCloseButton {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 15px;
+}
+.toastCloseBtnSpan1 {
+	width: 25px;
+	height: 2.5px;
+	border-radius: 5px;
+	cursor: pointer;
+	background-color: var(--main-white-color);
+	rotate: -45deg;
+	z-index: 100;
+	position: absolute;
+	transition: all 0.3s;
+}
+.toastCloseBtnSpan2 {
+	width: 25px;
+	height: 2.5px;
+	border-radius: 5px;
+	cursor: pointer;
+	rotate: 45deg;
+	background-color: var(--main-white-color);
+	z-index: 100;
+	position: absolute;
+	transition: all 0.3s;
+}
+.toastCloseButton:hover .toastCloseBtnSpan1 {
+	background-color: var(--main-active-color);
+}
+.toastCloseButton:hover .toastCloseBtnSpan2 {
+	background-color: var(--main-active-color);
+}
