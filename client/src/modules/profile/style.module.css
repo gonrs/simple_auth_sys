@@ -1,6 +1,12 @@
-.changeNameFlex{
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
+.changeNameFlex {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+	justify-content: center;
+}
+.changePassFlex {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+	justify-content: center;
 }

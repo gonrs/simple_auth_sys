@@ -122,7 +122,7 @@ public class AuthService {
         User user;
         if (!userService.isValidEmail(email)) {
             //        Create user by request
-            String newPassword = generatePassword();
+            String newPassword = userService.generatePassword();
             User newUser = User.builder()
                     .name(name)
                     .email(email)
@@ -151,16 +151,5 @@ public class AuthService {
                 .role(user.getRole())
                 .build();
         return AuthResponse.builder().user(userInfoResponse).refresh_token(refreshToken).access_token(jwtToken).build();
-    }
-
-    private String generatePassword() {
-        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        SecureRandom random = new SecureRandom();
-        StringBuilder password = new StringBuilder();
-        for (int i = 0; i < 8; i++) {
-            int index = random.nextInt(chars.length());
-            password.append(chars.charAt(index));
-        }
-        return password.toString();
     }
 }

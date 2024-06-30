@@ -29,7 +29,9 @@ const Toast: FC<IToastProps> = ({ message, close, type }) => {
 	// 		currentToastImage = messageImg
 	// 		break
 	// }
-	if (message.trim.length == 0) {
+	if (message === null) {
+		close()
+	} else if (message.trim().length === 0) {
 		close()
 	}
 	return (

@@ -144,7 +144,6 @@ const Auth: FC = ({}) => {
 						text='continue_with'
 						theme='filled_black'
 						onSuccess={(credentialResponse: CredentialResponse) => {
-							console.log(credentialResponse)
 							googleAuth(
 								credentialResponse.credential
 									? credentialResponse.credential

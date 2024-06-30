@@ -45,12 +45,15 @@ function App() {
 						tokenHelper.setRefreshTokenToLocalStorage(refresh_token)
 					} catch (err: any) {
 						dispatch(logoutUser())
+						tokenHelper.clearAccessTokenFromLocalStorage()
+						tokenHelper.clearRefreshTokenFromLocalStorage()
 					}
 				}
 			}
 		} catch (err) {
 			dispatch(logoutUser())
-			console.log(err)
+			tokenHelper.clearAccessTokenFromLocalStorage()
+			tokenHelper.clearRefreshTokenFromLocalStorage()
 		}
 		setIsLoading(false)
 	}

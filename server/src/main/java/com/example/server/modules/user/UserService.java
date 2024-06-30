@@ -5,11 +5,12 @@ import com.example.server.utils.JwtService;
 import com.example.server.utils.MailSenderService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.security.SecureRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,6 @@ public class UserService {
 
     public User create(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            System.out.println("WORKING");
             throw new Errors.AuthError("User with this email is already exists.");
         } else {
             return save(user);
@@ -49,9 +49,13 @@ public class UserService {
     }
 
     public void updateUserPass(String oldPassword, String newPassword) {
+        if (oldPassword.equals(newPassword)) {
+            throw new Errors.ResError("The new password must not be equal to the current one");
+        }
         User currentUser = getCurrentUser();
         if (passwordEncoder.matches(oldPassword, currentUser.getPassword())) {
             currentUser.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(currentUser);
         } else {
             throw new Errors.ResError("Password is incorrect");
         }
@@ -60,9 +64,7 @@ public class UserService {
     public boolean isValidEmail(String email) {
         return userRepository.existsByEmail(email);
     }
-    public void updateUserEmail(String password, String newEmail) {
-//        update user email
-    }
+
 
     @SneakyThrows
     @Transactional
@@ -97,4 +99,48 @@ public class UserService {
         User user = getCurrentUser();
         userRepository.delete(user);
     }
+
+    public void resetPassword() {
+        User user = getCurrentUser();
+        String newPassword = generatePassword();
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        String emailBody = "Here is your new auto-generated password: " + newPassword;
+        mailSenderService.sendEmail(user.getEmail(), emailBody, "Your auto-generated password");
+    }
+
+    public void updateUserEmail(String password, String newEmail) {
+        User user = getCurrentUser();
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new Errors.ResError("Password is incorrect");
+        }
+        if (!user.isEmailVerification()) {
+            throw new Errors.ResError("Email has`t been verified, please confirm your email");
+        }
+        if(isValidEmail(newEmail)){
+            throw new Errors.ResError("This email is already registered");
+        }
+        user.setEmail(newEmail);
+        user.setEmailVerification(false);
+        userRepository.save(user);
+//
+        String confirmedToken = jwtService.generateConfirmToken(user);
+        try {
+            mailSenderService.sendEmailConfirmedMail(user.getEmail(), confirmedToken);
+        } catch (Exception e) {
+            throw new Errors.ResError("Something went wrong.");
+        }
+    }
+
+    public String generatePassword() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder password = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            int index = random.nextInt(chars.length());
+            password.append(chars.charAt(index));
+        }
+        return password.toString();
+    }
+
 }

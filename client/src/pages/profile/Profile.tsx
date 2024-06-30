@@ -6,15 +6,22 @@ import { ROLE } from '@enums/ROLE'
 import { useProfile } from '@hooks/useProfile'
 import { ModalPage } from '@components/modal'
 import ChangeNameModal from '@modules/profile/ChangeNameModal'
+import ChangePasswordModal from '@modules/profile/ChangePasswordModal'
+import ChangeEmailModal from '@modules/profile/ChangeEmailModal'
 
 const Profile: FC = ({}) => {
 	const [isNameModalOpen, setIsNameModalOpen] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+	const [isChangePasswordModalPageOpen, setIsChangePasswordModalPageOpen] =
+		useState(false)
+	const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] =
+		useState(false)
+	const [isChangeEmailModalOpen, setIsChangeEmailModalOpen] = useState(false)
 	//
 	const [isSendEmailDisabled, setIsSendEmailDisabled] = useState(false)
 	//
 	const { user } = useAuth()
-	const { deleteAccount, sendConfirmMail } = useProfile()
+	const { deleteAccount, sendConfirmMail, resetPassword } = useProfile()
 	return (
 		<div>
 			<ModalPage
@@ -25,12 +32,42 @@ const Profile: FC = ({}) => {
 				children={<ChangeNameModal close={() => setIsNameModalOpen(false)} />}
 			/>
 			<ModalPage
+				active={isChangePasswordModalPageOpen}
+				setActive={setIsChangePasswordModalPageOpen}
+				type='modal'
+				title='Change password.'
+				children={
+					<ChangePasswordModal
+						close={() => setIsChangePasswordModalPageOpen(false)}
+					/>
+				}
+			/>
+			<ModalPage
+				active={isChangeEmailModalOpen}
+				setActive={setIsChangeEmailModalOpen}
+				type='modal'
+				title='Change email.'
+				children={
+					<ChangeEmailModal
+						close={() => setIsChangeEmailModalOpen(false)}
+					/>
+				}
+			/>
+			<ModalPage
 				active={isDeleteModalOpen}
 				setActive={setIsDeleteModalOpen}
 				type='confirm'
 				title='Delete account.'
 				text='Are you really want to delete account ?'
 				okFunction={deleteAccount}
+			/>
+			<ModalPage
+				active={isResetPasswordModalOpen}
+				setActive={setIsResetPasswordModalOpen}
+				type='confirm'
+				title='Reset password.'
+				text='Your new password will be sent to your email, you really want to do this ?'
+				okFunction={resetPassword}
 			/>
 			<h2 className={s.profileTitle}>{user?.userName}`s Profile</h2>
 			<div className={s.profileMain}>
@@ -46,7 +83,7 @@ const Profile: FC = ({}) => {
 					<h2>
 						Email: <span>{user?.email}</span>
 					</h2>
-					<Button onClick={() => console.log('Change email')} size='small'>
+					<Button onClick={() => setIsChangeEmailModalOpen(true)} size='small'>
 						Change
 					</Button>
 				</div>
@@ -77,6 +114,20 @@ const Profile: FC = ({}) => {
 				</div>
 
 				<div className={s.profileFlex}>
+					<Button
+						onClick={() => setIsResetPasswordModalOpen(true)}
+						size='small'
+						color='primary'
+					>
+						Reset password
+					</Button>
+					<Button
+						onClick={() => setIsChangePasswordModalPageOpen(true)}
+						size='small'
+						color='primary'
+					>
+						Change password
+					</Button>
 					<Button
 						onClick={() => setIsDeleteModalOpen(true)}
 						size='small'

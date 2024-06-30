@@ -46,6 +46,11 @@ public class UserContoller {
         userService.updateUserPass(userData.getOldPassword(), userData.getNewPassword());
     }
 
+    @GetMapping("/resetPassword")
+    public void resetPassword(){
+        userService.resetPassword();
+    }
+
     @PostMapping("/updateEmail")
     public void updateEmail(@RequestBody @Valid UpdateUserEmailRequest userData) {
         userService.updateUserEmail(userData.getPassword(), userData.getNewEmail());

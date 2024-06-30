@@ -20,9 +20,9 @@ export const useAuth = () => {
 		dispatch(setUpdate())
 	}
 	async function logOut() {
-		dispatch(logoutUser())
 		tokenHelper.clearAccessTokenFromLocalStorage()
 		tokenHelper.clearRefreshTokenFromLocalStorage()
+		dispatch(logoutUser())
 		toast?.open.success('LogOut Successfully')
 	}
 	// Auth functions
