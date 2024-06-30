@@ -138,6 +138,10 @@ public class AuthService {
             user = newUser;
         } else {
             user = userService.getByEmail(email);
+            if(!user.isEmailVerification()){
+                user.setEmailVerification(true);
+                userService.save(user);
+            }
         }
         //        Generate tokens
         String jwtToken = jwtService.generateToken(user);

@@ -1,4 +1,4 @@
-import { instance, updateToken } from '@api/axios.api'
+import { instance, updateInstance, updateToken } from '@api/axios.api'
 import { useToast } from '@components/toastMessage'
 import { ServerURLS } from '@enums/URLS'
 import { tokenHelper } from '@helper/tokenHelper'
@@ -22,8 +22,8 @@ export const useAuth = () => {
 	async function logOut() {
 		tokenHelper.clearAccessTokenFromLocalStorage()
 		tokenHelper.clearRefreshTokenFromLocalStorage()
+		updateInstance()
 		dispatch(logoutUser())
-		toast?.open.success('LogOut Successfully')
 	}
 	// Auth functions
 	async function register(email: string, password: string, name: string) {
@@ -51,6 +51,7 @@ export const useAuth = () => {
 					registeredUser.data.refresh_token
 				)
 				toast?.open.success('Register Successfully')
+				updateInstance()
 			}
 		} catch (err: any) {
 			toast?.open.error(err.response.data.message)
@@ -81,6 +82,7 @@ export const useAuth = () => {
 					registeredUser.data.refresh_token
 				)
 				toast?.open.success('Login Successfully')
+				updateInstance()
 			}
 		} catch (err: any) {
 			toast?.open.error(err.response.data.message)
@@ -111,6 +113,7 @@ export const useAuth = () => {
 						registeredUser.data.refresh_token
 					)
 					toast?.open.success('Google Auth Successfully')
+					updateInstance()
 				}
 			}
 		} catch (err: any) {

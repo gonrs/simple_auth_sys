@@ -1,10 +1,10 @@
 package com.example.server.modules.user;
 
+import com.example.server.modules.user.dto.TokensResponse;
 import com.example.server.modules.user.dto.UpdateUserEmailRequest;
 import com.example.server.modules.user.dto.UpdateUserPassRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +32,7 @@ public class UserContoller {
     }
 
     @GetMapping("/confirmMail/{token}")
-    public void confirmMail(@PathVariable @Valid @NotEmpty(message = "token can`t be empty")  String token) {
+    public void confirmMail(@PathVariable @Valid @NotEmpty(message = "token can`t be empty") String token) {
         userService.confirmMail(token);
     }
 
@@ -47,12 +47,12 @@ public class UserContoller {
     }
 
     @GetMapping("/resetPassword")
-    public void resetPassword(){
+    public void resetPassword() {
         userService.resetPassword();
     }
 
     @PostMapping("/updateEmail")
-    public void updateEmail(@RequestBody @Valid UpdateUserEmailRequest userData) {
-        userService.updateUserEmail(userData.getPassword(), userData.getNewEmail());
+    public ResponseEntity<TokensResponse> updateEmail(@RequestBody @Valid UpdateUserEmailRequest userData) {
+        return ResponseEntity.ok(userService.updateUserEmail(userData.getPassword(), userData.getNewEmail()));
     }
 }

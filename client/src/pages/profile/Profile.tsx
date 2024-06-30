@@ -8,6 +8,8 @@ import { ModalPage } from '@components/modal'
 import ChangeNameModal from '@modules/profile/ChangeNameModal'
 import ChangePasswordModal from '@modules/profile/ChangePasswordModal'
 import ChangeEmailModal from '@modules/profile/ChangeEmailModal'
+import { instance } from '@api/axios.api'
+import { ServerURLS } from '@enums/URLS'
 
 const Profile: FC = ({}) => {
 	const [isNameModalOpen, setIsNameModalOpen] = useState(false)
@@ -22,6 +24,9 @@ const Profile: FC = ({}) => {
 	//
 	const { user } = useAuth()
 	const { deleteAccount, sendConfirmMail, resetPassword } = useProfile()
+	async function changeRole() {
+		await instance.get(ServerURLS.CHECKSERVERSTATUS)
+	}
 	return (
 		<div>
 			<ModalPage
@@ -48,9 +53,7 @@ const Profile: FC = ({}) => {
 				type='modal'
 				title='Change email.'
 				children={
-					<ChangeEmailModal
-						close={() => setIsChangeEmailModalOpen(false)}
-					/>
+					<ChangeEmailModal close={() => setIsChangeEmailModalOpen(false)} />
 				}
 			/>
 			<ModalPage
@@ -108,7 +111,7 @@ const Profile: FC = ({}) => {
 					<h2>
 						Role: <span>{user?.role}</span>
 					</h2>
-					<Button onClick={() => console.log('Change role')} size='small'>
+					<Button onClick={changeRole} size='small'>
 						Set to {user?.role === ROLE.USER ? ROLE.ADMIN : ROLE.USER}
 					</Button>
 				</div>

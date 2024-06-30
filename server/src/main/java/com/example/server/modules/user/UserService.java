@@ -1,5 +1,8 @@
 package com.example.server.modules.user;
 
+import com.example.server.modules.auth.dto.AuthResponse;
+import com.example.server.modules.auth.dto.UserInfoResponse;
+import com.example.server.modules.user.dto.TokensResponse;
 import com.example.server.utils.Errors;
 import com.example.server.utils.JwtService;
 import com.example.server.utils.MailSenderService;
@@ -109,7 +112,7 @@ public class UserService {
         mailSenderService.sendEmail(user.getEmail(), emailBody, "Your auto-generated password");
     }
 
-    public void updateUserEmail(String password, String newEmail) {
+    public TokensResponse updateUserEmail(String password, String newEmail) {
         User user = getCurrentUser();
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new Errors.ResError("Password is incorrect");
@@ -117,19 +120,24 @@ public class UserService {
         if (!user.isEmailVerification()) {
             throw new Errors.ResError("Email has`t been verified, please confirm your email");
         }
-        if(isValidEmail(newEmail)){
+        if (isValidEmail(newEmail)) {
             throw new Errors.ResError("This email is already registered");
         }
         user.setEmail(newEmail);
         user.setEmailVerification(false);
         userRepository.save(user);
 //
-        String confirmedToken = jwtService.generateConfirmToken(user);
-        try {
-            mailSenderService.sendEmailConfirmedMail(user.getEmail(), confirmedToken);
-        } catch (Exception e) {
-            throw new Errors.ResError("Something went wrong.");
-        }
+//        String confirmedToken = jwtService.generateConfirmToken(user);
+//        try {
+//            mailSenderService.sendEmailConfirmedMail(user.getEmail(), confirmedToken);
+//        } catch (Exception e) {
+//            throw new Errors.ResError("Something went wrong.");
+//        }
+//
+        //        Generate token
+        String jwtToken = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        return TokensResponse.builder().access_token(jwtToken).refresh_token(refreshToken).build();
     }
 
     public String generatePassword() {

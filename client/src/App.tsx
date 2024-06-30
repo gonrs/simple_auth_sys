@@ -1,6 +1,7 @@
 import { instance, updateToken } from '@api/axios.api'
 import { ServerURLS } from '@enums/URLS'
 import { tokenHelper } from '@helper/tokenHelper'
+import { useAuth } from '@hooks/useAuth'
 import LoadingPage from '@pages/helpPages/LoadingPage'
 import ServerNotWorking from '@pages/helpPages/ServerNotWorking'
 import { MainRoute } from '@routes/MainRoute'
@@ -27,15 +28,18 @@ function App() {
 	const dispatch = useAppDispatch()
 	const { update } = useAppSelector(state => state.user)
 	//
+	const { logOut, authMyUser } = useAuth()
 	const [isLoading, setIsLoading] = useState(true)
 	async function getMeByToken() {
 		try {
 			if (tokenHelper.getAccessTokenFromLocalStorage() == null) {
-				dispatch(logoutUser())
+				// dispatch(logoutUser())
+				logOut()
 			} else {
 				const data = await instance.get<IUser>(ServerURLS.GETME)
 				if (data.status == 200) {
-					dispatch(authUser(data.data))
+					// dispatch(authUser(data.data))
+					authMyUser(data.data)
 				} else {
 					try {
 						const { access_token, refresh_token } = (
@@ -44,16 +48,18 @@ function App() {
 						tokenHelper.setAccessTokenToLocalStorage(access_token)
 						tokenHelper.setRefreshTokenToLocalStorage(refresh_token)
 					} catch (err: any) {
-						dispatch(logoutUser())
-						tokenHelper.clearAccessTokenFromLocalStorage()
-						tokenHelper.clearRefreshTokenFromLocalStorage()
+						// dispatch(logoutUser())
+						// tokenHelper.clearAccessTokenFromLocalStorage()
+						// tokenHelper.clearRefreshTokenFromLocalStorage()
+						logOut()
 					}
 				}
 			}
 		} catch (err) {
-			dispatch(logoutUser())
-			tokenHelper.clearAccessTokenFromLocalStorage()
-			tokenHelper.clearRefreshTokenFromLocalStorage()
+			// dispatch(logoutUser())
+			// tokenHelper.clearAccessTokenFromLocalStorage()
+			// tokenHelper.clearRefreshTokenFromLocalStorage()
+			logOut()
 		}
 		setIsLoading(false)
 	}
