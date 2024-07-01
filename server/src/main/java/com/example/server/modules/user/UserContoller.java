@@ -55,4 +55,9 @@ public class UserContoller {
     public ResponseEntity<TokensResponse> updateEmail(@RequestBody @Valid UpdateUserEmailRequest userData) {
         return ResponseEntity.ok(userService.updateUserEmail(userData.getPassword(), userData.getNewEmail()));
     }
+
+    @GetMapping("/updateRole")
+    public void updateRole(){
+        userService.updateRole();
+    }
 }

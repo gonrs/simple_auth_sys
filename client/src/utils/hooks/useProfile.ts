@@ -72,6 +72,14 @@ export const useProfile = () => {
 			toast?.open.error(err.response.data.message)
 		}
 	}
+	async function updateRole() {
+		try {
+			await instance.get(ServerURLS.UPDATE_role)
+			updateUser()
+		} catch (err: any) {
+			toast?.open.error(err.response.data.message)
+		}
+	}
 	return {
 		deleteAccount,
 		sendConfirmMail,
@@ -79,5 +87,6 @@ export const useProfile = () => {
 		changePassword,
 		resetPassword,
 		changeEmail,
+		updateRole,
 	}
 }

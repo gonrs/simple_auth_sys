@@ -1,8 +1,7 @@
 package com.example.server.modules.user;
 
-import com.example.server.modules.auth.dto.AuthResponse;
-import com.example.server.modules.auth.dto.UserInfoResponse;
 import com.example.server.modules.user.dto.TokensResponse;
+import com.example.server.modules.user.helpers.Role;
 import com.example.server.utils.Errors;
 import com.example.server.utils.JwtService;
 import com.example.server.utils.MailSenderService;
@@ -151,4 +150,9 @@ public class UserService {
         return password.toString();
     }
 
+    public void updateRole() {
+        User user = getCurrentUser();
+        user.setRole(user.getRole() == Role.USER ? Role.ADMIN : Role.USER);
+        userRepository.save(user);
+    }
 }

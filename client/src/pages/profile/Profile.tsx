@@ -23,10 +23,8 @@ const Profile: FC = ({}) => {
 	const [isSendEmailDisabled, setIsSendEmailDisabled] = useState(false)
 	//
 	const { user } = useAuth()
-	const { deleteAccount, sendConfirmMail, resetPassword } = useProfile()
-	async function changeRole() {
-		await instance.get(ServerURLS.CHECKSERVERSTATUS)
-	}
+	const { deleteAccount, sendConfirmMail, resetPassword, updateRole } =
+		useProfile()
 	return (
 		<div>
 			<ModalPage
@@ -111,7 +109,7 @@ const Profile: FC = ({}) => {
 					<h2>
 						Role: <span>{user?.role}</span>
 					</h2>
-					<Button onClick={changeRole} size='small'>
+					<Button onClick={updateRole} size='small'>
 						Set to {user?.role === ROLE.USER ? ROLE.ADMIN : ROLE.USER}
 					</Button>
 				</div>
