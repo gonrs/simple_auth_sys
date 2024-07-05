@@ -1,5 +1,6 @@
 package com.example.server.utils;
 
+import com.example.server.utils.errors.Errors;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;

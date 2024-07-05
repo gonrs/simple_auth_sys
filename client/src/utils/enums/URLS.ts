@@ -20,7 +20,11 @@ export enum ServerURLS {
 	UPDATE_password = '/user/updatePassword',
 	UPDATE_resetPassword = '/user/resetPassword',
 	UPDATE_email = '/user/updateEmail',
+	UPDATE_profileOpen = '/user/updateIsProfileOpen',
 	UPDATE_role = '/user/updateRole',
 	//
 	DELETE_ACCOUNT = '/user/delete',
+	//
+	GETUSERBYEMAIL = '/user/findUserByEmail',
+	GETUSERBYID = '/user/findUserById',
 }

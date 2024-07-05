@@ -1,10 +1,11 @@
 package com.example.server.modules.user;
 
+import com.example.server.modules.user.dto.SubUserResponse;
 import com.example.server.modules.user.dto.TokensResponse;
 import com.example.server.modules.user.helpers.Role;
-import com.example.server.utils.Errors;
 import com.example.server.utils.JwtService;
 import com.example.server.utils.MailSenderService;
+import com.example.server.utils.errors.Errors;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +44,10 @@ public class UserService {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new Errors.AuthError("User with this email is not found."));
     }
 
+    public User getById(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new Errors.AuthError("User with this id is not found."));
+    }
+
     //    contoller functions
     public void updateUserName(String newUserName) {
         User currentUser = getCurrentUser();
@@ -66,7 +71,6 @@ public class UserService {
     public boolean isValidEmail(String email) {
         return userRepository.existsByEmail(email);
     }
-
 
     @SneakyThrows
     @Transactional
@@ -139,6 +143,18 @@ public class UserService {
         return TokensResponse.builder().access_token(jwtToken).refresh_token(refreshToken).build();
     }
 
+    public void updateRole() {
+        User user = getCurrentUser();
+        user.setRole(user.getRole() == Role.USER ? Role.ADMIN : Role.USER);
+        userRepository.save(user);
+    }
+
+    public void updateIsProfileOpen() {
+        User user = getCurrentUser();
+        user.setOpenProfile(!user.isOpenProfile());
+        userRepository.save(user);
+    }
+
     public String generatePassword() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         SecureRandom random = new SecureRandom();
@@ -150,9 +166,29 @@ public class UserService {
         return password.toString();
     }
 
-    public void updateRole() {
-        User user = getCurrentUser();
-        user.setRole(user.getRole() == Role.USER ? Role.ADMIN : Role.USER);
-        userRepository.save(user);
+    public SubUserResponse findUserByEmail(String email) {
+        User user = getByEmail(email);
+        if (!user.isOpenProfile()) {
+            throw new Errors.ResError("User with this email not found");
+        }
+        return SubUserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .userName(user.getName())
+                .role(user.getRole())
+                .build();
+    }
+
+    public SubUserResponse findUserById(long id) {
+        User user = getById(id);
+        if (!user.isOpenProfile()) {
+            throw new Errors.ResError("User with this id not found");
+        }
+        return SubUserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .userName(user.getName())
+                .role(user.getRole())
+                .build();
     }
 }

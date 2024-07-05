@@ -1,17 +1,19 @@
-import { instance, updateInstance, updateToken } from '@api/axios.api'
+import { instance, updateInstance } from '@api/axios.api'
 import { useToast } from '@components/toastMessage'
 import { ServerURLS } from '@enums/URLS'
 import { tokenHelper } from '@helper/tokenHelper'
 import { useAppDispatch, useAppSelector } from '@store/storeHook'
 import { authUser, setUpdate, logoutUser } from '@store/user/userSlice'
-import { IGetUserType, ITokensType } from '@type/resTypes'
+import { IGetUserType } from '@type/resTypes'
 
 import { IUser } from '@type/userTypes'
+import { useError } from './useError'
 
 export const useAuth = () => {
 	const user = useAppSelector(state => state.user)
 	const dispatch = useAppDispatch()
 	const toast = useToast()
+	const { logError } = useError()
 	// Redux User
 	async function authMyUser(user: IUser) {
 		dispatch(authUser(user))
@@ -42,6 +44,7 @@ export const useAuth = () => {
 					userName: registeredUser.data.user.userName,
 					email: registeredUser.data.user.email,
 					emailVerification: registeredUser.data.user.emailVerification,
+					openProfile: registeredUser.data.user.openProfile,
 					role: registeredUser.data.user.role,
 				})
 				tokenHelper.setAccessTokenToLocalStorage(
@@ -54,8 +57,7 @@ export const useAuth = () => {
 				updateInstance()
 			}
 		} catch (err: any) {
-			toast?.open.error(err.response.data.message)
-			console.log(err.response.data.message)
+			logError(err)
 		}
 	}
 	async function login(email: string, password: string) {
@@ -73,6 +75,7 @@ export const useAuth = () => {
 					userName: registeredUser.data.user.userName,
 					email: registeredUser.data.user.email,
 					emailVerification: registeredUser.data.user.emailVerification,
+					openProfile: registeredUser.data.user.openProfile,
 					role: registeredUser.data.user.role,
 				})
 				tokenHelper.setAccessTokenToLocalStorage(
@@ -85,8 +88,7 @@ export const useAuth = () => {
 				updateInstance()
 			}
 		} catch (err: any) {
-			toast?.open.error(err.response.data.message)
-			console.log(err.response.data.message)
+			logError(err)
 		}
 	}
 	async function googleAuth(credential: string | null) {
@@ -104,6 +106,7 @@ export const useAuth = () => {
 						userName: registeredUser.data.user.userName,
 						email: registeredUser.data.user.email,
 						emailVerification: registeredUser.data.user.emailVerification,
+						openProfile: registeredUser.data.user.openProfile,
 						role: registeredUser.data.user.role,
 					})
 					tokenHelper.setAccessTokenToLocalStorage(
@@ -117,8 +120,7 @@ export const useAuth = () => {
 				}
 			}
 		} catch (err: any) {
-			toast?.open.error(err.response.data.message)
-			console.log(err.response.data.message)
+			logError(err)
 		}
 	}
 	async function getMe(): Promise<IUser | null> {
@@ -126,6 +128,7 @@ export const useAuth = () => {
 			const user = await instance.get(ServerURLS.GETME)
 			return user.data
 		} catch (err: any) {
+			logError(err)
 			return null
 		}
 	}

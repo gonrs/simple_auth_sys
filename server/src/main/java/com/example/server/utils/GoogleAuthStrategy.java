@@ -1,5 +1,6 @@
 package com.example.server.utils;
 
+import com.example.server.utils.errors.Errors;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;

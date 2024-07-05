@@ -1,5 +1,6 @@
 package com.example.server.config;
 
+import com.example.server.modules.user.helpers.Role;
 import com.example.server.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req
                                 .requestMatchers(DataUtils.ALLOWED_URLS).permitAll()
+//                                .requestMatchers(DataUtils.ADMIN_URLS).hasRole(String.valueOf(Role.ADMIN))
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

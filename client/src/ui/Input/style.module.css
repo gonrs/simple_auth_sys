@@ -1,0 +1,24 @@
+.input {
+	padding: 10px 20px;
+	border-radius: 10px;
+	font-size: 16px;
+	margin: 5px;
+	background-color: var(--main-black-light-color-2);
+	min-width: 250px;
+	width: auto;
+	transition: all 0.3s;
+	border: 1px solid var(--main-black-light-color-2);
+}
+
+.input.primary {
+	border: 1px solid var(--main-active-color);
+	color: var(--main-active-color);
+}
+.input.active:focus {
+	border: 1px solid var(--main-active-color);
+	color: var(--main-active-color);
+}
+
+.input.large {
+	min-width: clamp(12.5rem, 4.545rem + 39.77vw, 34.375rem);
+}

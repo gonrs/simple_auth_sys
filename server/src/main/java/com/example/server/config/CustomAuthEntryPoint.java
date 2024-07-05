@@ -1,6 +1,6 @@
 package com.example.server.config;
 
-import com.example.server.utils.Errors;
+import com.example.server.utils.errors.Errors;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

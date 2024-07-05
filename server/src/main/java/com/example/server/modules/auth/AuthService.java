@@ -4,7 +4,7 @@ import com.example.server.modules.auth.dto.*;
 import com.example.server.modules.user.User;
 import com.example.server.modules.user.UserService;
 import com.example.server.modules.user.helpers.Role;
-import com.example.server.utils.Errors;
+import com.example.server.utils.errors.Errors;
 import com.example.server.utils.GoogleAuthStrategy;
 import com.example.server.utils.JwtService;
 import com.example.server.utils.MailSenderService;
@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +50,7 @@ public class AuthService {
                 .email(user.getEmail())
                 .userName(user.getName())
                 .emailVerification(user.isEmailVerification())
+                .openProfile(user.isOpenProfile())
                 .role(user.getRole())
                 .build();
         return AuthResponse.builder().user(userInfoResponse).refresh_token(refreshToken).access_token(jwtToken).build();
@@ -80,6 +80,7 @@ public class AuthService {
                 .userName(user.getName())
                 .emailVerification(user.isEmailVerification())
                 .role(user.getRole())
+                .openProfile(user.isOpenProfile())
                 .build();
         return AuthResponse.builder().user(userInfoResponse).refresh_token(refreshToken).access_token(jwtToken).build();
     }
@@ -91,6 +92,7 @@ public class AuthService {
                 .email(user.getEmail())
                 .userName(user.getName())
                 .emailVerification(user.isEmailVerification())
+                .openProfile(user.isOpenProfile())
                 .role(user.getRole())
                 .build();
     }
@@ -152,6 +154,7 @@ public class AuthService {
                 .email(user.getEmail())
                 .userName(user.getName())
                 .emailVerification(user.isEmailVerification())
+                .openProfile(user.isOpenProfile())
                 .role(user.getRole())
                 .build();
         return AuthResponse.builder().user(userInfoResponse).refresh_token(refreshToken).access_token(jwtToken).build();

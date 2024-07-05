@@ -8,7 +8,6 @@ export const instance = axios.create({
 	},
 })
 export function updateInstance() {
-	console.log(1111111)
 	instance.defaults.headers.Authorization = `Bearer ${tokenHelper.getAccessTokenFromLocalStorage()}`
 }
 export const updateToken = axios.create({

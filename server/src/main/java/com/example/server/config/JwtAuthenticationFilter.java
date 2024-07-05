@@ -1,7 +1,7 @@
 package com.example.server.config;
 
 import com.example.server.utils.DataUtils;
-import com.example.server.utils.Errors;
+import com.example.server.utils.errors.Errors;
 import com.example.server.utils.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

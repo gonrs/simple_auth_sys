@@ -25,7 +25,6 @@ function App() {
 		checkServerStatus()
 	}, [])
 	//
-	const dispatch = useAppDispatch()
 	const { update } = useAppSelector(state => state.user)
 	//
 	const { logOut, authMyUser } = useAuth()

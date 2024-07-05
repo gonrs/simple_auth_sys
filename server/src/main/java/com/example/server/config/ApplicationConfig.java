@@ -1,7 +1,7 @@
 package com.example.server.config;
 
 import com.example.server.modules.user.UserRepository;
-import com.example.server.utils.Errors;
+import com.example.server.utils.errors.Errors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

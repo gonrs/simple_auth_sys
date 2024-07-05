@@ -23,8 +23,13 @@ const Profile: FC = ({}) => {
 	const [isSendEmailDisabled, setIsSendEmailDisabled] = useState(false)
 	//
 	const { user } = useAuth()
-	const { deleteAccount, sendConfirmMail, resetPassword, updateRole } =
-		useProfile()
+	const {
+		deleteAccount,
+		sendConfirmMail,
+		resetPassword,
+		updateRole,
+		updateIsOpenProfile,
+	} = useProfile()
 	return (
 		<div>
 			<ModalPage
@@ -104,6 +109,14 @@ const Profile: FC = ({}) => {
 							Send confirmation email
 						</Button>
 					)}
+				</div>
+				<div className={s.profileFlex}>
+					<h2>
+						Profile open: <span>{user?.openProfile ? 'Yes' : 'No'}</span>
+					</h2>
+					<Button onClick={updateIsOpenProfile} size='small'>
+						Set profile {user?.openProfile ? 'Private' : 'Public'}
+					</Button>
 				</div>
 				<div className={s.profileFlex}>
 					<h2>

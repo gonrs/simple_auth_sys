@@ -38,6 +38,9 @@ public class User implements UserDetails {
     @Column(name = "email_verification", columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
     private boolean emailVerification;
 
+    @Column(name = "open_profile", columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
+    private boolean openProfile;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;

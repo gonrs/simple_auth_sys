@@ -1,0 +1,34 @@
+.select {
+	position: relative;
+}
+.selectOptions {
+	position: absolute;
+	top: 50px;
+	left: 0px;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	align-items: center;
+	width: 100%;
+}
+.selectButton {
+	min-width: 80px;
+	border-radius: 8px;
+	border: 1px solid transparent;
+	font-family: inherit;
+	cursor: pointer;
+	transition: all 0.3s;
+	background-color: var(--main-black-dark-color);
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	width: 100%;
+}
+.selectButton:focus,
+.selectButton:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+}
+.selectButton:hover {
+	border-color: var(--main-active-color);
+	color: var(--main-active-color);
+}
