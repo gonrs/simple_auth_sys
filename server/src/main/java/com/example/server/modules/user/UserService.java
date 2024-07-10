@@ -168,7 +168,8 @@ public class UserService {
 
     public SubUserResponse findUserByEmail(String email) {
         User user = getByEmail(email);
-        if (!user.isOpenProfile()) {
+        User currentUser = getCurrentUser();
+        if (!user.isOpenProfile() && currentUser.getRole() != Role.ADMIN) {
             throw new Errors.ResError("User with this email not found");
         }
         return SubUserResponse.builder()
