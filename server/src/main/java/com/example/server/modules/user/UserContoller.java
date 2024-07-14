@@ -1,11 +1,8 @@
 package com.example.server.modules.user;
 
-import com.example.server.modules.user.dto.SubUserResponse;
 import com.example.server.modules.user.dto.TokensResponse;
 import com.example.server.modules.user.dto.UpdateUserEmailRequest;
 import com.example.server.modules.user.dto.UpdateUserPassRequest;
-import com.example.server.modules.user.dto.gets.GetUserByEmailRequest;
-import com.example.server.modules.user.dto.gets.GetUserByIdRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
@@ -67,15 +64,5 @@ public class UserContoller {
     @GetMapping("/updateIsProfileOpen")
     public void updateIsProfileOpen() {
         userService.updateIsProfileOpen();
-    }
-
-    @PostMapping("/findUserByEmail")
-    public ResponseEntity<SubUserResponse> findUserByEmail(@RequestBody @Valid GetUserByEmailRequest data) {
-        return ResponseEntity.ok(userService.findUserByEmail(data.getEmail()));
-    }
-
-    @PostMapping("/findUserById")
-    public ResponseEntity<SubUserResponse> findUserById(@RequestBody @Valid GetUserByIdRequest data) {
-        return ResponseEntity.ok(userService.findUserById(data.getId()));
     }
 }

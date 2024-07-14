@@ -13,6 +13,8 @@ public class DataUtils {
             "/api/auth/refreshToken/**",
             "/api/user/checkServer"
     };
+
     public static final String[] ADMIN_URLS = {
+            "/api/admin/**"
     };
 }

@@ -8,8 +8,6 @@ import { ModalPage } from '@components/modal'
 import ChangeNameModal from '@modules/profile/ChangeNameModal'
 import ChangePasswordModal from '@modules/profile/ChangePasswordModal'
 import ChangeEmailModal from '@modules/profile/ChangeEmailModal'
-import { instance } from '@api/axios.api'
-import { ServerURLS } from '@enums/URLS'
 
 const Profile: FC = ({}) => {
 	const [isNameModalOpen, setIsNameModalOpen] = useState(false)

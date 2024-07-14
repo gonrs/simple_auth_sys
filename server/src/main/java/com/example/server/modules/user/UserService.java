@@ -23,6 +23,7 @@ public class UserService {
     private final MailSenderService mailSenderService;
     private final JwtService jwtService;
 
+    //  User crud
     public User save(User user) {
         return userRepository.save(user);
     }
@@ -48,7 +49,7 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new Errors.AuthError("User with this id is not found."));
     }
 
-    //    contoller functions
+    //  Update user data
     public void updateUserName(String newUserName) {
         User currentUser = getCurrentUser();
         currentUser.setName(newUserName);
@@ -145,7 +146,7 @@ public class UserService {
 
     public void updateRole() {
         User user = getCurrentUser();
-        user.setRole(user.getRole() == Role.USER ? Role.ADMIN : Role.USER);
+        user.setRole(user.getRole() == Role.ROLE_USER ? Role.ROLE_ADMIN : Role.ROLE_USER);
         userRepository.save(user);
     }
 
@@ -169,15 +170,10 @@ public class UserService {
     public SubUserResponse findUserByEmail(String email) {
         User user = getByEmail(email);
         User currentUser = getCurrentUser();
-        if (!user.isOpenProfile() && currentUser.getRole() != Role.ADMIN) {
+        if (!user.isOpenProfile() && currentUser.getRole() != Role.ROLE_ADMIN) {
             throw new Errors.ResError("User with this email not found");
         }
-        return SubUserResponse.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .userName(user.getName())
-                .role(user.getRole())
-                .build();
+        return SubUserResponse.builder().id(user.getId()).email(user.getEmail()).userName(user.getName()).role(user.getRole()).build();
     }
 
     public SubUserResponse findUserById(long id) {
@@ -185,11 +181,6 @@ public class UserService {
         if (!user.isOpenProfile()) {
             throw new Errors.ResError("User with this id not found");
         }
-        return SubUserResponse.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .userName(user.getName())
-                .role(user.getRole())
-                .build();
+        return SubUserResponse.builder().id(user.getId()).email(user.getEmail()).userName(user.getName()).role(user.getRole()).build();
     }
 }

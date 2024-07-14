@@ -17,19 +17,7 @@ const Toast: FC<IToastProps> = ({ message, close, type }) => {
 	useTimeOut(() => {
 		close()
 	}, preferences.toastLifeTime)
-	// let currentToastImage: null | string = null
-	// switch (type) {
-	// 	case 'error':
-	// 		currentToastImage = errorImg
-	// 		break
-	// 	case 'success':
-	// 		currentToastImage = successImg
-	// 		break
-	// 	case 'message':
-	// 		currentToastImage = messageImg
-	// 		break
-	// }
-	if (message === null) {
+	if (typeof message !== 'string') {
 		close()
 	} else if (message.trim().length === 0) {
 		close()

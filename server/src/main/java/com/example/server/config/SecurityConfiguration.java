@@ -1,6 +1,5 @@
 package com.example.server.config;
 
-import com.example.server.modules.user.helpers.Role;
 import com.example.server.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,12 +27,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//                .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req
                                 .requestMatchers(DataUtils.ALLOWED_URLS).permitAll()
-//                                .requestMatchers(DataUtils.ADMIN_URLS).hasRole(String.valueOf(Role.ADMIN))
+                                .requestMatchers(DataUtils.ADMIN_URLS).hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

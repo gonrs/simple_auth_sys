@@ -4,10 +4,10 @@ import com.example.server.modules.auth.dto.*;
 import com.example.server.modules.user.User;
 import com.example.server.modules.user.UserService;
 import com.example.server.modules.user.helpers.Role;
-import com.example.server.utils.errors.Errors;
 import com.example.server.utils.GoogleAuthStrategy;
 import com.example.server.utils.JwtService;
 import com.example.server.utils.MailSenderService;
+import com.example.server.utils.errors.Errors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,7 +37,7 @@ public class AuthService {
                 .name(request.getUserName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
 //        Save user
         userService.create(user);
@@ -130,7 +130,7 @@ public class AuthService {
                     .email(email)
                     .password(passwordEncoder.encode(newPassword))
                     .emailVerification(true)
-                    .role(Role.USER)
+                    .role(Role.ROLE_USER)
                     .build();
             //        Save user
             userService.create(newUser);
@@ -140,7 +140,7 @@ public class AuthService {
             user = newUser;
         } else {
             user = userService.getByEmail(email);
-            if(!user.isEmailVerification()){
+            if (!user.isEmailVerification()) {
                 user.setEmailVerification(true);
                 userService.save(user);
             }

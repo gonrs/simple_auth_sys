@@ -3,6 +3,7 @@ export enum URLS {
 	auth = '/auth',
 	profile = '/profile',
 	confirm = '/confirm/:token',
+	admin = '/admin',
 }
 export enum ServerURLS {
 	REGISTER = '/auth/register',
@@ -25,6 +26,6 @@ export enum ServerURLS {
 	//
 	DELETE_ACCOUNT = '/user/delete',
 	//
-	GETUSERBYEMAIL = '/user/findUserByEmail',
-	GETUSERBYID = '/user/findUserById',
+	GETUSERBYEMAIL = '/admin/user/findUserByEmail',
+	GETUSERBYID = '/admin/user/findUserById',
 }

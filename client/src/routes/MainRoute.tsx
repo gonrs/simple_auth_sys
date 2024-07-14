@@ -7,6 +7,9 @@ import ErrorPage from '@pages/helpPages/ErrorPage'
 import LayOut from '@pages/helpPages/LayOut'
 import Profile from '@pages/profile/Profile'
 import Confirm from '@pages/helpPages/Confirm'
+import Admin from '@pages/admin/Admin'
+import AdminRoute from './AdminRoute'
+import UserAdmin from '@modules/admin/UserAdmin'
 
 export const MainRoute = createBrowserRouter([
 	{
@@ -29,6 +32,16 @@ export const MainRoute = createBrowserRouter([
 			{
 				path: URLS.confirm,
 				element: <ProtectedRoute children={<Confirm />} needToBeAuth={true} />,
+			},
+			{
+				path: URLS.admin,
+				element: <AdminRoute children={<Admin />} />,
+				children: [
+					{
+						path: 'user',
+						element: <UserAdmin />,
+					},
+				],
 			},
 		],
 	},

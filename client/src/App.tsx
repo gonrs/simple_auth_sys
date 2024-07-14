@@ -5,8 +5,7 @@ import { useAuth } from '@hooks/useAuth'
 import LoadingPage from '@pages/helpPages/LoadingPage'
 import ServerNotWorking from '@pages/helpPages/ServerNotWorking'
 import { MainRoute } from '@routes/MainRoute'
-import { useAppDispatch, useAppSelector } from '@store/storeHook'
-import { logoutUser, authUser } from '@store/user/userSlice'
+import { useAppSelector } from '@store/storeHook'
 import { ITokensType } from '@type/resTypes'
 import { IUser } from '@type/userTypes'
 import { useState, useEffect } from 'react'
@@ -32,12 +31,10 @@ function App() {
 	async function getMeByToken() {
 		try {
 			if (tokenHelper.getAccessTokenFromLocalStorage() == null) {
-				// dispatch(logoutUser())
 				logOut()
 			} else {
 				const data = await instance.get<IUser>(ServerURLS.GETME)
 				if (data.status == 200) {
-					// dispatch(authUser(data.data))
 					authMyUser(data.data)
 				} else {
 					try {
@@ -47,17 +44,11 @@ function App() {
 						tokenHelper.setAccessTokenToLocalStorage(access_token)
 						tokenHelper.setRefreshTokenToLocalStorage(refresh_token)
 					} catch (err: any) {
-						// dispatch(logoutUser())
-						// tokenHelper.clearAccessTokenFromLocalStorage()
-						// tokenHelper.clearRefreshTokenFromLocalStorage()
 						logOut()
 					}
 				}
 			}
 		} catch (err) {
-			// dispatch(logoutUser())
-			// tokenHelper.clearAccessTokenFromLocalStorage()
-			// tokenHelper.clearRefreshTokenFromLocalStorage()
 			logOut()
 		}
 		setIsLoading(false)
@@ -78,13 +69,6 @@ function App() {
 					)}
 				</>
 			)}
-			{/* {isAllGood ? (
-				<>
-					{isLoading ? <LoadingPage /> : <RouterProvider router={MainRoute} />}
-				</>
-			) : (
-				<ServerNotWorking />
-			)} */}
 		</>
 	)
 }
